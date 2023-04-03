@@ -9,6 +9,7 @@ window.onload = function () {
     // } else {
     //   mbWrap.style.display = "block";
     // }
+
     // 클래스 추가 방식
     const state = mbWrap.classList.contains("active");
     if (state) {
@@ -21,7 +22,7 @@ window.onload = function () {
   });
 
   // 비주얼 슬라이드
-  // 동적, 즉 서버에서 슬라이드를 생성하는 경우
+  // 동적 즉, 서버에서 슬라이드를 생성하는 경우
   const slideTotal = document.querySelectorAll(
     ".swVisual .swiper-slide"
   ).length;
@@ -49,9 +50,9 @@ window.onload = function () {
     },
   });
 
-  //   swVisual.on("slideChange", function () {
-  //     console.log("slide changed");
-  //   });
+  // swVisual.on("slideChange", function () {
+  //   console.log("slide changed");
+  // });
   swVisual.on("slideChangeTransitionStart", function () {
     // console.log("slide changed", this.realIndex);
     changeSwVisual(this.realIndex);
@@ -59,7 +60,7 @@ window.onload = function () {
 
   // 비주얼 슬라이드 제어 목록
   let swVisualControlLi = document.querySelectorAll(".sw-visual-control li");
-  //   console.log(swVisualControlLi);
+  // console.log(swVisualControlLi);
   swVisualControlLi.forEach((item, index) => {
     // console.log(item);
     item.addEventListener("click", function () {
@@ -67,6 +68,7 @@ window.onload = function () {
       changeSwVisual(index);
     });
   });
+
   function changeSwVisual(_idx) {
     // css 처리 (포커스 클래스 추가 및 제거)
     // 1. active 클래스 모두 제거
@@ -76,21 +78,25 @@ window.onload = function () {
     // 2. 클릭된 번호를 이용해서 클래스 추가하기
     swVisualControlLi[_idx].classList.add("active");
     // 3. 클릭된 번호를 이용해서 Swiper 를 이동
-    // 주의사항(loop 를 옵션으로 준 경우는 아래 구문 금지)
-    // swVisual.slideTo(_iDx);
+    // * 주의 사항 (loop 를 옵션으로 준 경우는 아래 구문 금지)
+    // swVisual.slideTo(_index);
     swVisual.slideToLoop(_idx, 500);
   }
 
-  // 최초 클릭된 것처럼 active 클래스 추가
+  // 최초 클릭된 것처럼  active 클래스 추가
   if (slideTotal > 0) {
     changeSwVisual(0);
   }
+
+  // brandSlide
+  const swBrand = new Swiper(".swBrand");
+
   // Visual Swiper 스케일 효과
-  // 참조 : https://bkstudio.tistory.com/6
+  // 참조 https://bkstudio.tistory.com/6
   // window 의 안쪽(웹브라우저 안쪽만) 높이
   let winHeight = window.innerHeight;
 
-  // 수직으로 몇 픽셀만큼 스크롤 되었는지 파악
+  // 수직으로 몇 픽셀 만큼 스크롤 되었는지 파악
   let scTop = window.scrollY || window.pageYOffset;
 
   // 변화를 줄 대상
@@ -98,19 +104,24 @@ window.onload = function () {
   // 변화를 적용할 함수
   function swVisualMove() {
     // scale 적용 비율값
-    // transform : scale(ratio)
+    // transform: scale(ratio)
     let ratio = 1 + scTop * 0.001;
-    // y축 적용
-    // transform : translateY(transY)
+    // y 축 적용
+    // transform: translateY(transY)
     let transY = scTop * 0.05;
     // 한계값 설정
-    if (ratio > 1.2) ratio = 1.2;
-    if (transY > 10) transY = 10;
+    if (ratio > 1.2) {
+      ratio = 1.2;
+    }
+    if (transY > 10) {
+      transY = 10;
+    }
     // 최종 transform 에 적용할 글자 완성
     let cssTxt = `translateY(${transY}%) scale(${ratio})`;
     // console.log(cssTxt);
     swVisualWrap.style.transform = cssTxt;
   }
+
   // 기준값 갱신
   window.addEventListener("scroll", function () {
     winHeight = window.innerHeight;
