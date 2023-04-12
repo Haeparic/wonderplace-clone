@@ -1,5 +1,26 @@
 window.onload = function () {
-  // AOS 세팅
+  // 위로 가기
+  const goTopBt = document.querySelector(".gotop");
+  goTopBt.addEventListener("click", function () {
+    // 구글링 추천
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
+  });
+  // 스크롤 시에 부드럽게 goTop 보이고 숨기기
+  window.addEventListener("scroll", function () {
+    // 1. 스크롤바의 위치값
+    const scY = window.scrollY;
+    if (scY > 80) {
+      // 2. 스크롤바가 100픽셀 이동시
+      goTopBt.classList.add("active");
+    } else {
+      goTopBt.classList.remove("active");
+    }
+  });
+
+  // AOS 셋팅
   AOS.init();
 
   // 모바일 메뉴 관련
@@ -95,11 +116,11 @@ window.onload = function () {
   let swBrandBts = document.querySelectorAll(".swBrandMenu > li");
   const swBrand = new Swiper(".swBrand", {
     pagination: {
-      el: ".swBrand-pg",
+      el: ".swBrand-pg ",
       clickable: true,
     },
     effect: "fade",
-    speed: 500,
+    speed: 1000,
     autoplay: {
       delay: 2000,
       disableOnInteraction: false,
@@ -115,22 +136,24 @@ window.onload = function () {
     item.addEventListener("click", function (e) {
       // href 막기
       e.preventDefault();
-      // 인덱스 번호를 넘겨서 슬라이드를 이동한다
+      // 인덱스 번호를 넘겨서 슬라이드를 이동한다.
       changeSwBrand(index);
     });
   });
+
   function changeSwBrand(index) {
     // 슬라이드 이동
     swBrand.slideTo(index);
     changeSwBrandFocus(index);
   }
+
   // active 클래스 이동
   function changeSwBrandFocus(index) {
     // li 태그에서 active 클래스 모두 지우기
     swBrandBts.forEach((item) => {
       item.classList.remove("active");
     });
-    // 하나만 포커스 (active) 클래스 적용
+    // 하나만 포커스(active) 클래스 적용
     swBrandBts[index].classList.add("active");
   }
 
@@ -184,10 +207,11 @@ window.onload = function () {
 
   function effectText() {
     let value02 = stX * 2;
+    //https://developer.mozilla.org/ko/docs/Web/API/Element/getBoundingClientRect
     let rect =
       document.querySelector(".effect").getBoundingClientRect().top +
       window.scrollY;
-    // winHeight: 웹브라우저 내용(상단 웹브라우저 메뉴 제거한 높이)
+    // windHeight: 웹브라우저 내용(상단 웹브라우저 메뉴 제거한 높이)
     let offset = rect - winHeight;
 
     let calvalue = scTop - offset;
@@ -198,10 +222,12 @@ window.onload = function () {
     }
     let cssTxt = "translate(" + ratio + "%,0px)";
     effect_01.style.transform = cssTxt;
+    // console.log(cssTxt);
 
     // ratio = -ratio;
     let cssTxt2 = "translate(" + -1 * ratio + "%,0px)";
     effect_02.style.transform = cssTxt2;
+    // console.log(cssTxt2);
   }
 
   // 기준값 갱신
